@@ -25,7 +25,7 @@ def Write2Csv(data_list):
 
 if __name__ == "__main__":
     start = time.time()
-    time_stamp_list_storage_path = "./data/20pages_update-time.csv"
+    time_stamp_list_storage_path = "./data/41-60pages_update-time.csv"
     ts_list = getTSListAndConvert(time_stamp_list_storage_path)
     Write2Csv(ts_list)
     end = time.time()

@@ -27,7 +27,7 @@ def getContentByUrl(url_list):
     with tqdm(total=len(url_list)) as pbar:
         for url in url_list:
             # 随机休眠，防止被封
-            time.sleep(random.randint(1, 5))
+            # time.sleep(random.randint(1, 5))
             # 发送请求
             response = requests.get(url[0], headers=headers)
             # print("state_code:", response.status_code)    # 200即正常
@@ -58,7 +58,7 @@ def saveContentsTocsv(contents):
 
 if __name__ == "__main__":
     start = time.time()
-    url_list_storage_path = "./data/link-1-test.csv"
+    url_list_storage_path = "./data/41-60pages_link.csv"
 
     url_list = getUrlList(url_list_storage_path)
     contents = getContentByUrl(url_list)

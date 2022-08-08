@@ -14,7 +14,8 @@ url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
 fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识
 tok = '1330118282'                            # token， 注意更新
 
-def getAllUrl(page_num=1):                             # pages
+
+def getAllUrl(page_num=1, start_page=0):                             # pages
     title = []
     link = []
     update_time = []
@@ -22,7 +23,7 @@ def getAllUrl(page_num=1):                             # pages
         for i in range(page_num):
             data = {
                 'action': 'list_ex',
-                'begin': i*5,       #页数
+                'begin': start_page + i*5,       #页数
                 'count': '5',
                 'fakeid': fad,
                 'type': '9',
@@ -56,8 +57,9 @@ def write2csv(data_list):
 
 if __name__ == '__main__':
     Page_Num = int(input("please input the [Page-Num] you need:\n"))
+    Page_Start = 290
     start = time.time()
-    title, link, update_time = getAllUrl(page_num=Page_Num)
+    title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)
     # save urls, titles, update_times
     print("link-->title-->update_time")
     write2csv(link)
