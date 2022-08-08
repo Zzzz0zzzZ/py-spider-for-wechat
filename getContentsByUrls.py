@@ -35,11 +35,13 @@ def getContentByUrl(url_list):
             soup = bs4.BeautifulSoup(response.text, 'html.parser')
             # 大多数p标签中包含的是文字，但也有一些直接是 “section > span”， 这些内容没有爬到
             soup_sel = soup.select("p")
+            # soup_sel = soup.select(".rich_media_inner")
             content = ""
             for c in soup_sel:
                 t = c.get_text().strip('\n')
                 if t != '':
                     content += t
+            # print(content)
             # print(content[116:-11])
             content = content[116:-11]
             contents.append(content)
@@ -58,7 +60,7 @@ def saveContentsTocsv(contents):
 
 if __name__ == "__main__":
     start = time.time()
-    url_list_storage_path = "./data/41-60pages_link.csv"
+    url_list_storage_path = "./data/20pages_link.csv"
 
     url_list = getUrlList(url_list_storage_path)
     contents = getContentByUrl(url_list)

@@ -28,7 +28,7 @@ if __name__ == "__main__" :
     title_path = "./data/20pages_title.csv"
     update_time_path = "./data/20pages_real-time.csv"
     url_path = "./data/20pages_link.csv"
-    content_path = "./data/20pages_content.csv"
+    content_path = "data/20pages_content.csv"
     # load files
     title_list = getTitleList(title_path)
     update_time_list = getTitleList(update_time_path)
