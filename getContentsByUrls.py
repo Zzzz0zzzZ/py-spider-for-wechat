@@ -40,6 +40,8 @@ def getContentByUrl(url_list):
                 t = c.get_text().strip('\n')
                 if t != '':
                     content += t
+            # print(content[116:-11])
+            content = content[116:-11]
             contents.append(content)
             pbar.update(1)
         return contents
@@ -56,7 +58,7 @@ def saveContentsTocsv(contents):
 
 if __name__ == "__main__":
     start = time.time()
-    url_list_storage_path = "./data/20pages_link.csv"
+    url_list_storage_path = "./data/link-1-test.csv"
 
     url_list = getUrlList(url_list_storage_path)
     contents = getContentByUrl(url_list)
