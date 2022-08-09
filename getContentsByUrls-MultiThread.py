@@ -5,8 +5,11 @@ import threading
 import requests
 import bs4
 import time
-import  queue
+import queue
 from tqdm import tqdm
+import getAllUrls
+import datetime
+path = getAllUrls.path
 
 headers = {
         "cookie":
@@ -28,7 +31,7 @@ def do_craw(url_queue:queue.Queue, response_queue:queue.Queue):
         url = url_queue.get()
         response = requests.get(url[1][0], headers=headers)
         response_queue.put([url[0], response])
-        print("craw")
+        # print("craw")
         time.sleep(random.randint(1, 2))
 
 # 不断解析对象，将结果添加到contents列表中
@@ -48,22 +51,22 @@ def do_parse(response_queue:queue.Queue):
         # 删除固定前缀和后缀
         content = content[116:-11]
         contents.append([response[0], content])
-        print("parse")
+        # print("parse")
         time.sleep(random.randint(1, 2))
     # return contents
 
 # 按行存csv， 编码'utf-8-sig'存中文
 def saveContentsTocsv(contents):
-    file_name = input("please name the new csv-file\n")
-    with open('./data/' + file_name + '.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
+    # file_name = input("please name the new csv-file\n")
+    with open(path + 'content.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
         writer = csv.writer(csvfile)
         for row in contents:
             writer.writerow([row])
-    print("done")
+    print(f"[save content list] {str(datetime.datetime.now())} done")
 
 
 if __name__ == "__main__":
-    url_list_storage_path = "./data/20pages_link.csv"
+    url_list_storage_path = path + 'url.csv'
     url_list = getUrlList(url_list_storage_path)
     url_queue = queue.Queue()
     response_queue = queue.Queue()

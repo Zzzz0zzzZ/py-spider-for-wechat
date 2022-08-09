@@ -4,16 +4,18 @@ import requests
 import time
 import csv
 from tqdm import tqdm
+import datetime
 
 # cookie注意更新
 headers = {
-    "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; rand_info=CAESIJrdL2xSqHo7JtTHuM8d4zAMoSNjxacqc6VQsR4g87rR; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=GYSHLkTsYGcdfdQ/Oj2wGnYGGBkKpTBgA59H5y7Zb2Su8NHcYn40uu+pALruIHzO; slave_sid=VnNCREhCQ1diTkoyQ091ejQ0ckoxdDBiTUxLMWxURHFPVDNsWmFhZVY0UjFzemc0UjhZc19hOERZY2tGa2dEcFRmeEJjV2tWRXRoZlFfMjFlUmhkbXRUdF9pdzUxTEVSVzQxbmhaYnVMMnNuSm55b0NsYkJwOHhLSEdOMk9mYk1hSW5DcDFsZTFjVEw5YUkw; slave_user=gh_495d307185e5; xid=1f54bfb9bf5268fecf62675424ba6a66; mm_lang=zh_CN",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+    "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; mm_lang=zh_CN; rand_info=CAESIO/1tFyCH39j5klFAuV/nTPZ8gOJ3ZStHPJo5HybMV5G; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=CqBa6Gu6AqIgvNwWNfs8evsF34skb0CGA4ADC/Lyb/Evw2EgV0ndOk5QxsaQ9rt9; slave_sid=NzNENl9sMTA1S1BseHZuOWNnYUx5aFNDZDZpTlpTWHdFRV95emU3eFg4aXU4TU5XN05WWWVwd2theXpha2QxYm80aUJ3TmozR0Y2MkpGS3FmRUdoeUdsQXE3Tnc0VDROMldiSldjME52YlJXYlRmZURnbXZhZHF1V2I1bm1ZR3h3MVVmUjA1bGs1ZmFadktv; slave_user=gh_495d307185e5; xid=812593c7226f1eb047710fc225633509",
+    "user-agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
 }
 url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
 fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识
-tok = '1330118282'                            # token， 注意更新
+tok = '879722838'                            # token， 注意更新
 
+path = f'./data/{str(datetime.date.today())}/'
 
 def getAllUrl(page_num=1, start_page=0):                             # pages
     title = []
@@ -46,27 +48,59 @@ def getAllUrl(page_num=1, start_page=0):                             # pages
 
     return title, link, update_time
 
-def write2csv(data_list):
-    file_name = input("please name the file\n")
-    with open('./data/' + file_name + '.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+def write2csv(data_list, eType:str):
+    # file_name = input("please name the file\n")
+    mkdir(path=path)
+    with open(path + eType + '.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
         writer = csv.writer(csvfile)
         for row in data_list:
             writer.writerow([row])
-    print("done")
+    print(f"[save {eType} list] {str(datetime.datetime.now())} done")
 
+def mkdir(path):
+    '''
+    创建指定的文件夹
+    :param path: 文件夹路径，字符串格式
+    :return: True(新建成功) or False(文件夹已存在，新建失败)
+    '''
+    # 引入模块
+    import os
+
+    # 去除首位空格
+    path = path.strip()
+    # 去除尾部 \ 符号
+    path = path.rstrip("\\")
+
+    # 判断路径是否存在
+    # 存在     True
+    # 不存在   False
+    isExists = os.path.exists(path)
+
+    # 判断结果
+    if not isExists:
+        # 如果不存在则创建目录
+         # 创建目录操作函数
+        os.makedirs(path)
+        print(path + ' 创建成功')
+        return True
+    else:
+        # 如果目录存在则不创建，并提示目录已存在
+        print(path + ' 目录已存在')
+        return False
 
 if __name__ == '__main__':
     # set args
     Page_Num = int(input("please input the [Page-Num] you need:\n"))
     Page_Start = int(input("please input the [Page_Start] you need:\n"))
+    # Page_Start = 390
     # begin
     start = time.time()
     title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)
     # save urls, titles, update_times
-    print("link-->title-->update_time")
-    write2csv(link)
-    write2csv(title)
-    write2csv(update_time)
+    # print("link-->title-->update_time")
+    write2csv(link, eType="url")
+    write2csv(title, eType="title")
+    write2csv(update_time, eType="update-time")
     end = time.time()
     print("time cost:", end-start, "s")
 
