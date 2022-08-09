@@ -56,8 +56,10 @@ def write2csv(data_list):
 
 
 if __name__ == '__main__':
+    # set args
     Page_Num = int(input("please input the [Page-Num] you need:\n"))
-    Page_Start = 290
+    Page_Start = int(input("please input the [Page_Start] you need:\n"))
+    # begin
     start = time.time()
     title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)
     # save urls, titles, update_times
