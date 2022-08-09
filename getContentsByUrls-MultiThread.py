@@ -48,7 +48,7 @@ def do_parse(response_queue:queue.Queue):
             t = c.get_text().strip('\n')
             if t != '':
                 content += t
-        # 删除固定前缀和后缀
+        # 删除固定前缀和后缀: 只使用于公众号[诺维信中国]
         content = content[116:-11]
         contents.append([response[0], content])
         # print("parse")
