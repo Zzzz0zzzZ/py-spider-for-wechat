@@ -13,7 +13,7 @@
 #### 使用方式
 1. 登录自己的微信公众号平台，获得、更新: `cookie`,公众号唯一`fakeid`,`token`
 2. 运行`getAllUrls.py`,获得公众号文章`url`,`title`,`TimeStamp`
-3. 运行`getContentsByUrls.py`,获得每一篇文章的文字内容
+3. 运行`getContentsByUrls-MultiThread.py`,获得每一篇文章的文字内容
 4. 运行`getRealTimeByTimeStamp.py`,将时间戳转换为正确时间
 5. 运行`getTitleByKeywords.py`,根据节日关键词列表，筛选节日相关文章
 
