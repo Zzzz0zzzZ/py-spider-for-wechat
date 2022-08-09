@@ -9,13 +9,14 @@ import datetime
 # cookie注意更新
 headers = {
     "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; mm_lang=zh_CN; rand_info=CAESIO/1tFyCH39j5klFAuV/nTPZ8gOJ3ZStHPJo5HybMV5G; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=CqBa6Gu6AqIgvNwWNfs8evsF34skb0CGA4ADC/Lyb/Evw2EgV0ndOk5QxsaQ9rt9; slave_sid=NzNENl9sMTA1S1BseHZuOWNnYUx5aFNDZDZpTlpTWHdFRV95emU3eFg4aXU4TU5XN05WWWVwd2theXpha2QxYm80aUJ3TmozR0Y2MkpGS3FmRUdoeUdsQXE3Tnc0VDROMldiSldjME52YlJXYlRmZURnbXZhZHF1V2I1bm1ZR3h3MVVmUjA1bGs1ZmFadktv; slave_user=gh_495d307185e5; xid=812593c7226f1eb047710fc225633509",
-    "user-agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
 }
 url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
 fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识
 tok = '879722838'                            # token， 注意更新
 
 path = f'./data/{str(datetime.date.today())}/'
+
 
 def getAllUrl(page_num=1, start_page=0):                             # pages
     title = []
@@ -92,7 +93,7 @@ if __name__ == '__main__':
     # set args
     Page_Num = int(input("please input the [Page-Num] you need:\n"))
     Page_Start = int(input("please input the [Page_Start] you need:\n"))
-    # Page_Start = 390
+    # Page_Start = 490
     # begin
     start = time.time()
     title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)

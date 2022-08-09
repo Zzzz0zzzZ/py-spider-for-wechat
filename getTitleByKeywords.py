@@ -2,7 +2,9 @@ import csv
 import re
 import getAllUrls
 import datetime
+
 path = getAllUrls.path
+
 def getTitleList(titles_storage_path):
     with open(titles_storage_path, 'r', encoding='utf-8-sig') as csvfile:
         reader = csv.reader(csvfile)
@@ -25,7 +27,7 @@ def regexTitleByKeywords(sentences_list, keywords_list):
 
 if __name__ == "__main__" :
     # keyword list
-    keyword_list = ["日", "节", "新年", "快乐", "祝", "周"]
+    keyword_list = ["日", "节", "新年", "快乐", "祝"]
     # Path
     title_path = path + "title.csv"
     update_time_path = path + "real-time.csv"
