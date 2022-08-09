@@ -36,7 +36,7 @@ def getAllUrl(page_num=1, start_page=0):                             # pages
                 'f': 'json',
                 'ajax': '1',
             }
-            time.sleep(random.randint(1, 8))
+            time.sleep(random.randint(1, 2))
             r = requests.get(url, headers=headers, params=data)
             # 解析json
             dic = r.json()
