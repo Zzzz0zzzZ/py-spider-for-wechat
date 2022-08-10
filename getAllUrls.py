@@ -8,12 +8,13 @@ import datetime
 
 # cookie注意更新
 headers = {
-    "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; mm_lang=zh_CN; rand_info=CAESIO/1tFyCH39j5klFAuV/nTPZ8gOJ3ZStHPJo5HybMV5G; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=CqBa6Gu6AqIgvNwWNfs8evsF34skb0CGA4ADC/Lyb/Evw2EgV0ndOk5QxsaQ9rt9; slave_sid=NzNENl9sMTA1S1BseHZuOWNnYUx5aFNDZDZpTlpTWHdFRV95emU3eFg4aXU4TU5XN05WWWVwd2theXpha2QxYm80aUJ3TmozR0Y2MkpGS3FmRUdoeUdsQXE3Tnc0VDROMldiSldjME52YlJXYlRmZURnbXZhZHF1V2I1bm1ZR3h3MVVmUjA1bGs1ZmFadktv; slave_user=gh_495d307185e5; xid=812593c7226f1eb047710fc225633509",
+    "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; mm_lang=zh_CN; uuid=cfef0bb197ffadcc39cd19672192d886; rand_info=CAESIGwNspMVbwTqis6Zen9lzi/uA+0WslkGq/2PwEPjSuMv; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=Qx0Ar2KLEjMps6NWmjT6XSa1ywc1l4aQ8R/QrtlPr3XhA3icpTy/+Mdkx+Z7YZ5N; slave_sid=UDdlWUlxV21XWjk2UU5UR3R5Zjh2Q2pleTFDVmJ0OXMwMUtXVXpQRFFtVWdnTmJHdEdQYlhLYlROdF9aYnZ4bUwzc1lPdVc4SHV6U2QxYm0yYlc0SFlyX2xSZGNXSjBtT1RtcE9UcVcwR3dfMGdKMWNuRjRuelMwUnlESFAzR2Z1WVdJdmFNd3hLNFZCdE5U; slave_user=gh_495d307185e5; xid=f0acfc05b17919a15423b39668ab4673",
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
 }
 url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
-fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识
-tok = '879722838'                            # token， 注意更新
+fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识  [诺维信中国]
+# fad = 'Mzg5ODU5MTA5NA=='                   # [渡你到彼岸]
+tok = '618429680'                            # token， 注意更新
 
 path = f'./data/{str(datetime.date.today())}/'
 

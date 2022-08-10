@@ -15,4 +15,3 @@ python ./getTitleByKeywords.py
 
 echo "---------------------------------done----------------------------------"
 read -n 1
-
