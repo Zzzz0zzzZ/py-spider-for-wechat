@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>808</width>
+    <height>687</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>微信公众号爬虫v1.0.0</string>
+  </property>
+  <property name="locale">
+   <locale language="Chinese" country="China"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGroupBox" name="user_info">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>341</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>用户登陆</string>
+    </property>
+    <widget class="QLabel" name="token_label">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>43</y>
+       <width>46</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>token</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="cookie_label">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>76</y>
+       <width>46</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>cookie</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="token">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>42</y>
+       <width>251</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QTextEdit" name="cookie">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>80</y>
+       <width>251</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clear_cookie_btn">
+     <property name="geometry">
+      <rect>
+       <x>134</x>
+       <y>156</y>
+       <width>101</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>清空cookie</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clear_all_btn">
+     <property name="geometry">
+      <rect>
+       <x>235</x>
+       <y>156</y>
+       <width>91</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>全部清空</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="wechat_pub_select">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>70</y>
+      <width>381</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>公众号选择</string>
+    </property>
+    <widget class="QLabel" name="choose_wpub_res_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>选择公众号</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="choose_wpub_res">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>110</y>
+       <width>271</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="wpub_name">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>191</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="wpub_search">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>47</y>
+       <width>81</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>查询</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>45</y>
+       <width>77</width>
+       <height>46</height>
+      </rect>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="wpub_name_label">
+        <property name="minimumSize">
+         <size>
+          <width>46</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>公众号名称</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="wpub_notice_label">
+        <property name="minimumSize">
+         <size>
+          <width>46</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>(支持模糊查询)</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="crab_settings">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>270</y>
+      <width>741</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>爬取设置</string>
+    </property>
+    <widget class="QLabel" name="start_page_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>45</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>起始页码</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="start_page">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>45</y>
+       <width>48</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="crab_page_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>85</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>爬取页数</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="crab_page">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>85</y>
+       <width>48</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="save_filepath">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>85</y>
+       <width>231</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="choose_path_btn">
+     <property name="geometry">
+      <rect>
+       <x>496</x>
+       <y>80</y>
+       <width>91</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>选择...</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="save_filepath_label">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>85</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>保存位置</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="save_filename">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>46</y>
+       <width>231</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="start_btn">
+     <property name="geometry">
+      <rect>
+       <x>599</x>
+       <y>36</y>
+       <width>131</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>开始爬取</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="save_filename_label">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>46</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>46</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>保存文件名</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="crab_progress">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>410</y>
+      <width>741</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>爬取进度</string>
+    </property>
+    <widget class="QProgressBar" name="progress_bar">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>601</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>17</pointsize>
+      </font>
+     </property>
+     <property name="value">
+      <number>24</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="progress_bar_label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>60</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>进度条</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="info_label">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>80</y>
+       <width>60</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>15</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>日志信息</string>
+     </property>
+    </widget>
+    <widget class="QTextBrowser" name="log_info">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>80</y>
+       <width>641</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>13</pointsize>
+      </font>
+     </property>
+    </widget>
+    <widget class="QLabel" name="progress_bar_percentage">
+     <property name="geometry">
+      <rect>
+       <x>690</x>
+       <y>50</y>
+       <width>31</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>25%</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QLabel" name="title">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>10</y>
+      <width>161</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>22</pointsize>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>微信公众号爬虫</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="app_version">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>22</y>
+      <width>60</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>v1.0.0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="contact_author">
+    <property name="geometry">
+     <rect>
+      <x>561</x>
+      <y>40</y>
+      <width>211</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <underline>false</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>联系作者：wsz2002@foxmail.com</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>808</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>菜单</string>
+    </property>
+    <addaction name="actionbangzhu"/>
+    <addaction name="separator"/>
+    <addaction name="actiontuichu"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="font">
+    <font>
+     <pointsize>13</pointsize>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionbangzhu"/>
+   <addaction name="separator"/>
+   <addaction name="actiontuichu"/>
+  </widget>
+  <action name="actionbangzhu">
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </action>
+  <action name="actiontuichu">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
