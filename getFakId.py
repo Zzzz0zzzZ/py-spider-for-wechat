@@ -15,7 +15,14 @@ headers = {
 tok = '1196926817'
 
 
-def getFakId(headers, tok, query):
+def get_fakid(headers, tok, query):
+    '''
+
+    :param headers:请求头
+    :param tok: token
+    :param query: 查询名称
+    :return:
+    '''
     url = 'https://mp.weixin.qq.com/cgi-bin/searchbiz'
     data = {
         'action': 'search_biz',
@@ -32,8 +39,17 @@ def getFakId(headers, tok, query):
     r = requests.get(url, headers=headers, params=data)
     # 解析json
     dic = r.json()
+    # print(dic)
+    # 获取公众号名称、fakeid
+    wpub_list = [
+        {
+            'wpub_name': item['nickname'],
+            'wpub_fakid': item['fakeid']
+        }
+        for item in dic['list']
+    ]
+    #print(wpub_list)
+    return wpub_list
 
-    return dic
-
-if __name__ == '__main__':
-    getFakId(headers=headers, tok=tok, query='诺味')
+# if __name__ == '__main__':
+#     get_fakid(headers=headers, tok=tok, query='诺味')

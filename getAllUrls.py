@@ -5,21 +5,24 @@ import time
 import csv
 from tqdm import tqdm
 import datetime
+import os
+
 
 # cookie注意更新
-headers = {
-    "cookie": "ua_id=HvjnK6CPHdz8Zt8LAAAAAOhen6ItkIZVMBtW_LgGBJI=; wxuin=59663835389206; mm_lang=zh_CN; uuid=cfef0bb197ffadcc39cd19672192d886; rand_info=CAESIGwNspMVbwTqis6Zen9lzi/uA+0WslkGq/2PwEPjSuMv; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=Qx0Ar2KLEjMps6NWmjT6XSa1ywc1l4aQ8R/QrtlPr3XhA3icpTy/+Mdkx+Z7YZ5N; slave_sid=UDdlWUlxV21XWjk2UU5UR3R5Zjh2Q2pleTFDVmJ0OXMwMUtXVXpQRFFtVWdnTmJHdEdQYlhLYlROdF9aYnZ4bUwzc1lPdVc4SHV6U2QxYm0yYlc0SFlyX2xSZGNXSjBtT1RtcE9UcVcwR3dfMGdKMWNuRjRuelMwUnlESFAzR2Z1WVdJdmFNd3hLNFZCdE5U; slave_user=gh_495d307185e5; xid=f0acfc05b17919a15423b39668ab4673",
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-}
-url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
-fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识  [诺维信中国]
+# headers = {
+#     "cookie": "RK=kzslnuy1fj; ptcz=a94363703c487d5ceaef1119fb4e14ab7b2e73d313aa975f6198872bb78dbeeb; pgv_pvid=1429613752; pac_uid=0_012041c10b7f5; ua_id=DAIAARGIrbAfLgOlAAAAABNe61cI4YL5pX-j1h33BYw=; wxuin=60056270789759; ptui_loginuin=1175690167; mm_lang=zh_CN; uuid=54396a53ff3f0282913295afdcefebf8; rand_info=CAESIMzHN99y9Q3fbZekMmzzB/xWwif6Z1d+BPmQkdLH2XVe; slave_bizuin=3940396966; data_bizuin=3940396966; bizuin=3940396966; data_ticket=04csz1WhV8MNkw+OiR68UJaKfq1p+jIVEGy5f1MknGIHHRX5bkUTxcKsPpxY+cgq; slave_sid=OExNU0ZUS2lGSGdzNjcwZE9HUEx2eE5iaVlYcnhfaWZjZ0VKVUVQUnBzOTJQTlR4WHJHczdIUE5kbGI5T3F3bnZrNWpIeEZicXBGcFUyRm1pM0s3Y3JiSVdvWk1UYWFTcmRIbV9rM1ZQbU93S3F1Tnp1UDF6cFJySXNMV2J1WTR2QnFST3Y1Z2JVVkFyY1JK; slave_user=gh_495d307185e5; xid=61e496efd593cf0772f32e0f2f88ba38",
+#     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+# }
+
+# fad = 'MzA3OTI0OTk3OQ=='                     # fakeid， 公众号唯一标识  [诺维信中国]
 # fad = 'Mzg5ODU5MTA5NA=='                   # [渡你到彼岸]
-tok = '618429680'                            # token， 注意更新
+# tok = '1196926817'                            # token， 注意更新
 
-path = f'./data/{str(datetime.date.today())}/'
+# path = f'./data/{str(datetime.date.today())}/'
 
 
-def getAllUrl(page_num=1, start_page=0):                             # pages
+def getAllUrl(page_num, start_page, fad, tok, headers):                             # pages
+    url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
     title = []
     link = []
     update_time = []
@@ -50,10 +53,10 @@ def getAllUrl(page_num=1, start_page=0):                             # pages
 
     return title, link, update_time
 
-def write2csv(data_list, eType:str):
+def write2csv(path, filename, data_list, eType:str):
     # file_name = input("please name the file\n")
     mkdir(path=path)
-    with open(path + eType + '.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+    with open(path + '/' + filename + '_' + eType + '.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
         writer = csv.writer(csvfile)
         for row in data_list:
             writer.writerow([row])
@@ -65,8 +68,6 @@ def mkdir(path):
     :param path: 文件夹路径，字符串格式
     :return: True(新建成功) or False(文件夹已存在，新建失败)
     '''
-    # 引入模块
-    import os
 
     # 去除首位空格
     path = path.strip()
@@ -90,19 +91,35 @@ def mkdir(path):
         print(path + ' 目录已存在')
         return False
 
-if __name__ == '__main__':
+def run_getAllUrls(page_start, page_num, save_path, fad, tok, headers, filename):
     # set args
-    Page_Num = int(input("please input the [Page-Num] you need:\n"))
-    Page_Start = int(input("please input the [Page_Start] you need:\n"))
+    # Page_Num = int(input("please input the [Page-Num] you need:\n"))
+    # Page_Start = int(input("please input the [Page_Start] you need:\n"))
     # Page_Start = 490
     # begin
     start = time.time()
-    title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)
+    title, link, update_time = getAllUrl(page_num=page_num, start_page=page_start, fad=fad, tok=tok, headers=headers)
     # save urls, titles, update_times
     # print("link-->title-->update_time")
-    write2csv(link, eType="url")
-    write2csv(title, eType="title")
-    write2csv(update_time, eType="update-time")
+    write2csv(save_path, filename, link, eType="url")
+    write2csv(save_path, filename, title, eType="title")
+    write2csv(save_path, filename, update_time, eType="update-time")
     end = time.time()
-    print("time cost:", end-start, "s")
+    print("time cost:", end - start, "s")
+
+# if __name__ == '__main__':
+#     # set args
+#     Page_Num = int(input("please input the [Page-Num] you need:\n"))
+#     Page_Start = int(input("please input the [Page_Start] you need:\n"))
+#     # Page_Start = 490
+#     # begin
+#     start = time.time()
+#     title, link, update_time = getAllUrl(page_num=Page_Num, start_page=Page_Start)
+#     # save urls, titles, update_times
+#     # print("link-->title-->update_time")
+#     write2csv(link, eType="url")
+#     write2csv(title, eType="title")
+#     write2csv(update_time, eType="update-time")
+#     end = time.time()
+#     print("time cost:", end-start, "s")
 
