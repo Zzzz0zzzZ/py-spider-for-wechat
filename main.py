@@ -5,11 +5,14 @@
 # @Software: PyCharm
 
 import sys
+import datetime
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5 import QtCore, QtGui, QtWidgets
 from getFakId import get_fakid
 from getAllUrls import run_getAllUrls
 from getContentsByUrls_MultiThread import run_getContentsByUrls_MultiThread
+from getRealTimeByTimeStamp import run_getRealTimeByTimeStamp
+from getTitleByKeywords import run_getTitleByKeywords
 
 
 class Ui_MainWindow(object):
@@ -142,7 +145,7 @@ class Ui_MainWindow(object):
         self.crab_page.setFont(font)
         self.crab_page.setObjectName("crab_page")
         self.save_filepath = QtWidgets.QTextBrowser(self.crab_settings)
-        self.save_filepath.setGeometry(QtCore.QRect(260, 85, 231, 21))
+        self.save_filepath.setGeometry(QtCore.QRect(225, 85, 271, 21))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.save_filepath.setFont(font)
@@ -151,28 +154,51 @@ class Ui_MainWindow(object):
         self.choose_path_btn.setGeometry(QtCore.QRect(496, 80, 91, 32))
         self.choose_path_btn.setObjectName("choose_path_btn")
         self.save_filepath_label = QtWidgets.QLabel(self.crab_settings)
-        self.save_filepath_label.setGeometry(QtCore.QRect(170, 85, 81, 21))
+        self.save_filepath_label.setGeometry(QtCore.QRect(145, 85, 81, 21))
         self.save_filepath_label.setMinimumSize(QtCore.QSize(46, 0))
         font = QtGui.QFont()
         font.setPointSize(15)
         self.save_filepath_label.setFont(font)
         self.save_filepath_label.setObjectName("save_filepath_label")
+        ########
+        ########
         self.save_filename = QtWidgets.QLineEdit(self.crab_settings)
-        self.save_filename.setGeometry(QtCore.QRect(260, 46, 231, 21))
+        self.save_filename.setGeometry(QtCore.QRect(225, 46, 130, 21))      # 231
         font = QtGui.QFont()
         font.setPointSize(13)
         self.save_filename.setFont(font)
         self.save_filename.setObjectName("save_filename")
+        ########
+        ########
+        self.keywords = QtWidgets.QLineEdit(self.crab_settings)
+        self.keywords.setGeometry(QtCore.QRect(450, 46, 131, 21))
+        font = QtGui.QFont()
+        font.setPointSize(13)
+        self.keywords.setFont(font)
+        self.keywords.setObjectName("keywords")
+
+        ########
         self.start_btn = QtWidgets.QPushButton(self.crab_settings)
         self.start_btn.setGeometry(QtCore.QRect(599, 36, 131, 91))
         self.start_btn.setObjectName("start_btn")
+        ########
         self.save_filename_label = QtWidgets.QLabel(self.crab_settings)
-        self.save_filename_label.setGeometry(QtCore.QRect(170, 46, 81, 21))
+        self.save_filename_label.setGeometry(QtCore.QRect(145, 46, 81, 21))
         self.save_filename_label.setMinimumSize(QtCore.QSize(46, 0))
         font = QtGui.QFont()
         font.setPointSize(15)
         self.save_filename_label.setFont(font)
         self.save_filename_label.setObjectName("save_filename_label")
+        ########
+        self.keywords_label = QtWidgets.QLabel(self.crab_settings)
+        self.keywords_label.setGeometry(QtCore.QRect(370, 46, 81, 21))
+        self.keywords_label.setMinimumSize(QtCore.QSize(46, 0))
+        font = QtGui.QFont()
+        font.setPointSize(15)
+        self.keywords_label.setFont(font)
+        self.keywords_label.setObjectName("keywords_label")
+        #####
+        #####
         self.crab_progress = QtWidgets.QGroupBox(self.centralwidget)
         self.crab_progress.setGeometry(QtCore.QRect(30, 410, 741, 211))
         font = QtGui.QFont()
@@ -278,6 +304,7 @@ class Ui_MainWindow(object):
         self.save_filepath_label.setText(_translate("MainWindow", "保存位置"))
         self.start_btn.setText(_translate("MainWindow", "开始爬取"))
         self.save_filename_label.setText(_translate("MainWindow", "保存文件名"))
+        self.keywords_label.setText(_translate("MainWindow", "关键词筛选"))
         self.crab_progress.setTitle(_translate("MainWindow", "爬取进度"))
         self.progress_bar_label.setText(_translate("MainWindow", "进度条"))
         self.info_label.setText(_translate("MainWindow", "日志信息"))
@@ -343,11 +370,17 @@ class Ui_MainWindow(object):
         self.save_filepath_str = self.save_filepath.toPlainText()
         self.save_filename_str = self.save_filename.text()
 
+        # 添加下标时间
+        self.save_filepath_str = self.save_filepath_str + f'/{self.save_filename_str}_{str(datetime.date.today())}'
+
         # 当前选择的公众号的下标
         wpub_selected_index = self.choose_wpub_res.currentIndex()
         # 当前选择的公众号的fakeid
         wpub_selected_fakid = self.wpub_search_res[wpub_selected_index]['wpub_fakid']
 
+
+
+        self.set_info('正在获取所有文章url...')
         # 获取所有文章url
         run_getAllUrls(
             page_start=self.start_page_int,
@@ -356,20 +389,37 @@ class Ui_MainWindow(object):
             tok=self.tok_str,
             fad=wpub_selected_fakid,
             headers=self.headers,
-            filename=self.save_filename_str
+            filename='raw/' + self.save_filename_str
         )
-
+        self.set_info('正在根据所有文章的url获取文章内容...')
         # 多线程根据url获取content
         run_getContentsByUrls_MultiThread(
             savepath=self.save_filepath_str,
-            filename=self.save_filename_str,
+            filename='raw/' + self.save_filename_str,
             headers=self.headers
         )
-
+        self.set_info('正在进行时间戳转换...')
+        # 根据时间戳获取时间
+        run_getRealTimeByTimeStamp(
+            savepath=self.save_filepath_str,
+            filename='raw/' + self.save_filename_str
+        )
+        self.set_info('正在根据关键词筛选文章...')
+        # 用户输入关键词
+        self.keywords_str = self.keywords.text()
+        run_getTitleByKeywords(
+            keywords_str=self.keywords_str,
+            filename=self.save_filename_str,
+            savepath=self.save_filepath_str
+        )
+        self.set_info('爬取完成!')
         # 已选择公众号下标
         print('[][][][][][]', wpub_selected_index, type(wpub_selected_index))
 
         ##### 正则!!! #####
+    def set_info(self, info:str):
+        current_time = str(datetime.datetime.now())[:-7]
+        self.log_info.append(f'[{current_time}]     {info}')
 
 
 if __name__ == "__main__":

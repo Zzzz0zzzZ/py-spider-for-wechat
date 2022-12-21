@@ -97,6 +97,7 @@ def run_getAllUrls(page_start, page_num, save_path, fad, tok, headers, filename)
     # Page_Start = int(input("please input the [Page_Start] you need:\n"))
     # Page_Start = 490
     # begin
+    mkdir(save_path + '/raw')
     start = time.time()
     title, link, update_time = getAllUrl(page_num=page_num, start_page=page_start, fad=fad, tok=tok, headers=headers)
     # save urls, titles, update_times

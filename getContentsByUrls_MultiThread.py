@@ -49,7 +49,7 @@ def do_parse(response_queue:queue.Queue):
             if t != '':
                 content += t
         # 删除固定前缀和后缀: 只使用于公众号[诺维信中国]
-        content = content[116:-11]
+        # content = content[116:-11]
         contents.append([response[0], content])
         # print("parse")
         time.sleep(random.randint(1, 2))
