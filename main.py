@@ -97,7 +97,7 @@ class CrabThread(QThread):
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(808, 687)
+        MainWindow.resize(808, 647)
         MainWindow.setLocale(QtCore.QLocale(QtCore.QLocale.Chinese, QtCore.QLocale.China))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -327,35 +327,35 @@ class Ui_MainWindow(object):
         self.contact_author.setFont(font)
         self.contact_author.setObjectName("contact_author")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 808, 22))
-        self.menubar.setWhatsThis("")
-        self.menubar.setDefaultUp(False)
-        self.menubar.setNativeMenuBar(True)
-        self.menubar.setObjectName("menubar")
-        self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.setObjectName("menu")
-        MainWindow.setMenuBar(self.menubar)
-        self.toolBar = QtWidgets.QToolBar(MainWindow)
-        font = QtGui.QFont()
-        font.setPointSize(13)
-        self.toolBar.setFont(font)
-        self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        self.actionbangzhu = QtWidgets.QAction(MainWindow)
-        self.actionbangzhu.setObjectName("actionbangzhu")
-        self.actiontuichu = QtWidgets.QAction(MainWindow)
-        self.actiontuichu.setObjectName("actiontuichu")
-        self.menu.addAction(self.actionbangzhu)
-        self.menu.addSeparator()
-        self.menu.addAction(self.actiontuichu)
-        self.menubar.addAction(self.menu.menuAction())
-        self.toolBar.addAction(self.actionbangzhu)
-        self.toolBar.addSeparator()
-        self.toolBar.addAction(self.actiontuichu)
+        # self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        # self.statusbar.setObjectName("statusbar")
+        # MainWindow.setStatusBar(self.statusbar)
+        # self.menubar = QtWidgets.QMenuBar(MainWindow)
+        # self.menubar.setGeometry(QtCore.QRect(0, 0, 808, 22))
+        # self.menubar.setWhatsThis("")
+        # self.menubar.setDefaultUp(False)
+        # self.menubar.setNativeMenuBar(True)
+        # self.menubar.setObjectName("menubar")
+        # self.menu = QtWidgets.QMenu(self.menubar)
+        # self.menu.setObjectName("menu")
+        # MainWindow.setMenuBar(self.menubar)
+        # self.toolBar = QtWidgets.QToolBar(MainWindow)
+        # font = QtGui.QFont()
+        # font.setPointSize(13)
+        # self.toolBar.setFont(font)
+        # self.toolBar.setObjectName("toolBar")
+        # MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
+        # self.actionbangzhu = QtWidgets.QAction(MainWindow)
+        # self.actionbangzhu.setObjectName("actionbangzhu")
+        # self.actiontuichu = QtWidgets.QAction(MainWindow)
+        # self.actiontuichu.setObjectName("actiontuichu")
+        # self.menu.addAction(self.actionbangzhu)
+        # self.menu.addSeparator()
+        # self.menu.addAction(self.actiontuichu)
+        # self.menubar.addAction(self.menu.menuAction())
+        # self.toolBar.addAction(self.actionbangzhu)
+        # self.toolBar.addSeparator()
+        # self.toolBar.addAction(self.actiontuichu)
 
         # 设置 placeholder
         self.keywords.setPlaceholderText('中文分号分隔,可不填')
@@ -396,10 +396,10 @@ class Ui_MainWindow(object):
         self.title.setText(_translate("MainWindow", "微信公众号爬虫"))
         self.app_version.setText(_translate("MainWindow", "v1.0.0"))
         self.contact_author.setText(_translate("MainWindow", "联系作者：wsz2002@foxmail.com"))
-        self.menu.setTitle(_translate("MainWindow", "菜单"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.actionbangzhu.setText(_translate("MainWindow", "帮助"))
-        self.actiontuichu.setText(_translate("MainWindow", "退出"))
+        # self.menu.setTitle(_translate("MainWindow", "菜单"))
+        # self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+        # self.actionbangzhu.setText(_translate("MainWindow", "帮助"))
+        # self.actiontuichu.setText(_translate("MainWindow", "退出"))
         self.choose_wpub_res.addItem('请在查询后选择您要爬取的公众号')
 
     def bind_funcs(self):
@@ -418,7 +418,7 @@ class Ui_MainWindow(object):
         self.tok_str = self.token.text()
         # 获取cookie
         self.cok_str = self.cookie.toPlainText()
-        print("cookie", self.cok_str, type(self.cok_str))
+        # print("cookie", self.cok_str, type(self.cok_str))
         # 请求头
         self.headers = {
             "cookie": self.cok_str,
@@ -426,7 +426,7 @@ class Ui_MainWindow(object):
         }
         # 要查询的公众号名
         self.wpub_name_str = self.wpub_name.text()
-        print('wpub_name', self.wpub_name_str, type(self.wpub_name_str))
+        # print('wpub_name', self.wpub_name_str, type(self.wpub_name_str))
 
         FLAG = True
 
@@ -447,7 +447,7 @@ class Ui_MainWindow(object):
             try:
                 # 查询公众号及fakid
                 self.wpub_search_res = get_fakid(self.headers, self.tok_str, self.wpub_name_str)
-                print(self.wpub_search_res)
+                # print(self.wpub_search_res)
                 if len(self.wpub_search_res):
                     # 添加到comboBox(先清空默认提示, 后添加)
                     self.choose_wpub_res.clear()

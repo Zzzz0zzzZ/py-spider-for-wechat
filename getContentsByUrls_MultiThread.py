@@ -1,7 +1,6 @@
 import csv
 import random
 import threading
-
 import requests
 import bs4
 import time

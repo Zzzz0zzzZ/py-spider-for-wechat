@@ -43,7 +43,7 @@ def run_getTitleByKeywords(keywords_str:str, savepath:str, filename:str):
     FlAG = True
     if keywords_str != '':
         keyword_list = keywords_str.split('；')
-        print("kw_list", keyword_list)
+        # print("kw_list", keyword_list)
         # 正则获取下标
         res_index = regexTitleByKeywords(title_list, keyword_list)
     else:
