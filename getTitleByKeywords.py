@@ -27,8 +27,6 @@ def regexTitleByKeywords(sentences_list, keywords_list):
 
 
 def run_getTitleByKeywords(keywords_str:str, savepath:str, filename:str):
-    keyword_list = keywords_str.split('；')
-    print("kw_list", keyword_list)
     public_path = savepath + '/raw/' + filename + '_'
     # Path
     title_path = public_path + "title.csv"
@@ -40,8 +38,16 @@ def run_getTitleByKeywords(keywords_str:str, savepath:str, filename:str):
     update_time_list = getTitleList(update_time_path)
     url_list = getTitleList(url_path)
     content_list = getTitleList(content_path)
+
     # get index
-    res_index = regexTitleByKeywords(title_list, keyword_list)
+    FlAG = True
+    if keywords_str != '':
+        keyword_list = keywords_str.split('；')
+        print("kw_list", keyword_list)
+        # 正则获取下标
+        res_index = regexTitleByKeywords(title_list, keyword_list)
+    else:
+        FlAG = False
 
     data_list = []
     for a, b, c, d in zip(update_time_list, title_list, url_list, content_list):
@@ -54,46 +60,52 @@ def run_getTitleByKeywords(keywords_str:str, savepath:str, filename:str):
     with open( savepath + '/' + filename + '_爬取结果.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(['时间', '标题', '地址', '内容'])
-        for idx in res_index:
-            writer.writerow(
-                data_list[idx].values()
-            )
+        if FlAG:
+            for idx in res_index:
+                writer.writerow(
+                    data_list[idx].values()
+                )
+        else:
+            for i in range(len(data_list)):
+                writer.writerow(
+                    data_list[i].values()
+                )
     print(f"[save filtered data list] {str(datetime.datetime.now())} done")
 
-if __name__ == "__main__" :
-    # keyword list
-    keyword_list = ["日", "节", "新年", "快乐", "祝"]
-    # Path
-    title_path = path + "title.csv"
-    update_time_path = path + "real-time.csv"
-    url_path = path + "url.csv"
-    content_path = path + "content.csv"
-    # load files
-    title_list = getTitleList(title_path)
-    update_time_list = getTitleList(update_time_path)
-    url_list = getTitleList(url_path)
-    content_list = getTitleList(content_path)
-    # get index
-    res_index = regexTitleByKeywords(title_list, keyword_list)
-
-    data_list = []
-    for a, b, c, d in zip(update_time_list, title_list, url_list, content_list):
-        x = {}
-        x['时间'] = a[0]
-        x['标题'] = b[0]
-        x['地址'] = c[0]
-        x['内容'] = d[0]
-        data_list.append(x)
-    # print(data_list)
-    file_name = input("please name the new csv-file\n")
-    with open('./filtered_data/' + f'{str(datetime.date.today())}_' + file_name + '.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(['时间', '标题', '地址', '内容'])
-        for idx in res_index:
-            writer.writerow(
-                data_list[idx].values()
-            )
-    print(f"[save filtered data list] {str(datetime.datetime.now())} done")
+# if __name__ == "__main__" :
+#     # keyword list
+#     keyword_list = ["日", "节", "新年", "快乐", "祝"]
+#     # Path
+#     title_path = path + "title.csv"
+#     update_time_path = path + "real-time.csv"
+#     url_path = path + "url.csv"
+#     content_path = path + "content.csv"
+#     # load files
+#     title_list = getTitleList(title_path)
+#     update_time_list = getTitleList(update_time_path)
+#     url_list = getTitleList(url_path)
+#     content_list = getTitleList(content_path)
+#     # get index
+#     res_index = regexTitleByKeywords(title_list, keyword_list)
+#
+#     data_list = []
+#     for a, b, c, d in zip(update_time_list, title_list, url_list, content_list):
+#         x = {}
+#         x['时间'] = a[0]
+#         x['标题'] = b[0]
+#         x['地址'] = c[0]
+#         x['内容'] = d[0]
+#         data_list.append(x)
+#     # print(data_list)
+#     file_name = input("please name the new csv-file\n")
+#     with open('./filtered_data/' + f'{str(datetime.date.today())}_' + file_name + '.csv', 'w', newline='', encoding='utf-8-sig') as csvfile:
+#         writer = csv.writer(csvfile)
+#         writer.writerow(['时间', '标题', '地址', '内容'])
+#         for idx in res_index:
+#             writer.writerow(
+#                 data_list[idx].values()
+#             )
+#     print(f"[save filtered data list] {str(datetime.datetime.now())} done")
 
 
 

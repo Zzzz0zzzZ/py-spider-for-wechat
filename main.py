@@ -34,7 +34,19 @@ log_info = {
     "content": ["正在根据所有文章的url获取文章内容...", 25],
     "timestamp": ["正在进行时间戳转换...", 75],
     "keywords": ["正在根据关键词筛选文章...", 90],
-    "finish": ["爬取完成!", 100]
+    "finish": ["爬取完成！", 100],
+    "tok_null": ["token不能为空！", 0],
+    "cok_null": ["cookie不能为空！", 0],
+    "wpub_name_null": ['查询的公众号名不能为空！', 0],
+    "frequent": ["请检查token、cookie是否正确；如正确则由于请求次数过多，需要您稍后重试！", 0],
+    "res_null": ["无公众号匹配，请更换公众号名称", 0],
+    "page_num_null": ["爬取页数不能为0！", 0],
+    "savepath_null": ["文件保存位置不能为空！", 0],
+    "fad_null": ["选择公众号不能为空！", 0],
+    "filename_null": ["保存文件名不能为空！", 0],
+    "port_busy": ["请求次数过多，请您稍后重试！", 0],
+    "no_wpub": ["请先查询并选择公众号！", 0],
+    "settings_err": ["请检查所填信息是否完整！", 0]
 }
 
 # 爬虫工作线程
@@ -71,7 +83,8 @@ class CrabThread(QThread):
             savepath=self.dic['savepath'],
             filename='raw/' + self.dic['filename']
         )
-        self.sig_crab.emit('keywords')
+        if self.dic['keywords'] != '':
+            self.sig_crab.emit('keywords')
         # 用户输入关键词
         run_getTitleByKeywords(
             keywords_str=self.dic['keywords'],
@@ -344,6 +357,14 @@ class Ui_MainWindow(object):
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actiontuichu)
 
+        # 设置 placeholder
+        self.keywords.setPlaceholderText('中文分号分隔,可不填')
+        self.save_filename.setPlaceholderText('输入文件名')
+        self.save_filepath.setPlaceholderText('选择保存位置')
+        self.token.setPlaceholderText('将复制的token直接粘贴')
+        self.cookie.setPlaceholderText('将复制的cookie直接粘贴,内容可能为白色,不用理会')
+        self.wpub_name.setPlaceholderText('输入想要爬取的公众号名称')
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -406,12 +427,35 @@ class Ui_MainWindow(object):
         # 要查询的公众号名
         self.wpub_name_str = self.wpub_name.text()
         print('wpub_name', self.wpub_name_str, type(self.wpub_name_str))
-        # 查询公众号及fakid
-        self.wpub_search_res = get_fakid(self.headers, self.tok_str, self.wpub_name_str)
-        print(self.wpub_search_res)
-        # 添加到comboBox(先清空默认提示, 后添加)
-        self.choose_wpub_res.clear()
-        self.choose_wpub_res.addItems([f"{x['wpub_name']}   {x['wpub_fakid']}" for x in self.wpub_search_res])
+
+        FLAG = True
+
+        # 判断不为空
+        if self.tok_str == '':
+            self.set_info('tok_null')
+            FLAG = False
+
+        elif self.cok_str == '':
+            self.set_info('cok_null')
+            FLAG = False
+
+        elif self.wpub_name_str == '':
+            self.set_info('wpub_name_null')
+            FLAG = False
+
+        if FLAG:
+            try:
+                # 查询公众号及fakid
+                self.wpub_search_res = get_fakid(self.headers, self.tok_str, self.wpub_name_str)
+                print(self.wpub_search_res)
+                if len(self.wpub_search_res):
+                    # 添加到comboBox(先清空默认提示, 后添加)
+                    self.choose_wpub_res.clear()
+                    self.choose_wpub_res.addItems([f"{x['wpub_name']}   {x['wpub_fakid']}" for x in self.wpub_search_res])
+                else:
+                    self.set_info('res_null')
+            except Exception as e:
+                self.set_info('frequent')
 
     def slot_clear_cookie(self):
         self.cookie.clear()
@@ -436,28 +480,55 @@ class Ui_MainWindow(object):
         # 添加下标时间
         self.save_filepath_str = self.save_filepath_str + f'/{self.save_filename_str}_{str(datetime.date.today())}'
 
-        # 当前选择的公众号的下标
-        wpub_selected_index = self.choose_wpub_res.currentIndex()
-        # 当前选择的公众号的fakeid
-        wpub_selected_fakid = self.wpub_search_res[wpub_selected_index]['wpub_fakid']
+        try:
+            # 当前选择的公众号的下标
+            wpub_selected_index = self.choose_wpub_res.currentIndex()
+            # 当前选择的公众号的fakeid
+            wpub_selected_fakid = self.wpub_search_res[wpub_selected_index]['wpub_fakid']
+        except Exception as e:
+            self.set_info('no_wpub')
 
         # 获取关键词
         self.keywords_str = self.keywords.text()
+        FLAG = True
+        try:
+            if self.crab_page_int == 0:
+                self.set_info('page_num_null')
+                FLAG = False
+            elif self.save_filename_str == '':
+                self.set_info('filename_null')
+                FLAG = False
+            elif self.tok_str == '':
+                self.set_info('tok_null')
+                FLAG = False
+            elif wpub_selected_fakid == '':
+                self.set_info('no_wpub')
+                FLAG = False
+            elif self.save_filepath_str == f'/{self.save_filename_str}_{str(datetime.date.today())}':
+                self.set_info('savepath_null')
+                FLAG = False
+        except Exception as e:
+            self.set_info('settings_err')
+            FLAG = False
 
-        global dic
-        dic['page_start'] = self.start_page_int
-        dic['page_num'] = self.crab_page_int
-        dic['savepath'] = self.save_filepath_str
-        dic['tok'] = self.tok_str
-        dic['fad'] = wpub_selected_fakid
-        dic['headers'] = self.headers
-        dic['filename'] = self.save_filename_str
-        dic['keywords'] = self.keywords_str
+        if FLAG:
+            global dic
+            dic['page_start'] = self.start_page_int
+            dic['page_num'] = self.crab_page_int
+            dic['savepath'] = self.save_filepath_str
+            dic['tok'] = self.tok_str
+            dic['fad'] = wpub_selected_fakid
+            dic['headers'] = self.headers
+            dic['filename'] = self.save_filename_str
+            dic['keywords'] = self.keywords_str
 
-        # 爬取线程
-        self.crabThread = CrabThread(dic)
-        self.crabThread.sig_crab.connect(self.set_info)
-        self.crabThread.start()
+            # 爬取线程
+            self.crabThread = CrabThread(dic)
+            self.crabThread.sig_crab.connect(self.set_info)
+            try:
+                self.crabThread.start()
+            except Exception as e:
+                self.set_info('port_busy')
 
     def set_info(self, type):
         current_time = str(datetime.datetime.now())[:-7]
