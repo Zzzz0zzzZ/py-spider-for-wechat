@@ -8,11 +8,77 @@ import sys
 import datetime
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThread, pyqtSignal
 from getFakId import get_fakid
 from getAllUrls import run_getAllUrls
 from getContentsByUrls_MultiThread import run_getContentsByUrls_MultiThread
 from getRealTimeByTimeStamp import run_getRealTimeByTimeStamp
 from getTitleByKeywords import run_getTitleByKeywords
+
+# 参数
+dic = {
+    "page_start": None,
+    "page_num": None,
+    "savepath": None,
+    "tok": None,
+    "fad": None,
+    "headers": None,
+    "filename": None,
+    "keywords": None
+}
+
+# 日志信息  格式：[str, int]
+log_info = {
+    "start": ["开始爬取...", 0],
+    "url": ["正在获取所有文章url...", 0],
+    "content": ["正在根据所有文章的url获取文章内容...", 25],
+    "timestamp": ["正在进行时间戳转换...", 75],
+    "keywords": ["正在根据关键词筛选文章...", 90],
+    "finish": ["爬取完成!", 100]
+}
+
+# 爬虫工作线程
+class CrabThread(QThread):
+    sig_crab = pyqtSignal(str)
+
+    def __init__(self, dic):
+        super(CrabThread, self).__init__()
+        self.dic = dic
+
+    def run(self):
+        self.sig_crab.emit('start')
+        self.sig_crab.emit('url')
+        # 获取所有文章url
+        run_getAllUrls(
+            page_start=self.dic['page_start'],
+            page_num=self.dic['page_num'],
+            save_path=self.dic['savepath'],
+            tok=self.dic['tok'],
+            fad=self.dic['fad'],
+            headers=self.dic['headers'],
+            filename='raw/' + dic['filename']
+        )
+        self.sig_crab.emit('content')
+        # 多线程根据url获取content
+        run_getContentsByUrls_MultiThread(
+            savepath=self.dic['savepath'],
+            filename='raw/' + self.dic['filename'],
+            headers=self.dic['headers']
+        )
+        self.sig_crab.emit('timestamp')
+        # 根据时间戳获取时间
+        run_getRealTimeByTimeStamp(
+            savepath=self.dic['savepath'],
+            filename='raw/' + self.dic['filename']
+        )
+        self.sig_crab.emit('keywords')
+        # 用户输入关键词
+        run_getTitleByKeywords(
+            keywords_str=self.dic['keywords'],
+            filename=self.dic['filename'],
+            savepath=self.dic['savepath']
+        )
+        self.sig_crab.emit('finish')
 
 
 class Ui_MainWindow(object):
@@ -160,28 +226,21 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.save_filepath_label.setFont(font)
         self.save_filepath_label.setObjectName("save_filepath_label")
-        ########
-        ########
         self.save_filename = QtWidgets.QLineEdit(self.crab_settings)
-        self.save_filename.setGeometry(QtCore.QRect(225, 46, 130, 21))      # 231
+        self.save_filename.setGeometry(QtCore.QRect(225, 46, 130, 21))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.save_filename.setFont(font)
         self.save_filename.setObjectName("save_filename")
-        ########
-        ########
         self.keywords = QtWidgets.QLineEdit(self.crab_settings)
         self.keywords.setGeometry(QtCore.QRect(450, 46, 131, 21))
         font = QtGui.QFont()
         font.setPointSize(13)
         self.keywords.setFont(font)
         self.keywords.setObjectName("keywords")
-
-        ########
         self.start_btn = QtWidgets.QPushButton(self.crab_settings)
         self.start_btn.setGeometry(QtCore.QRect(599, 36, 131, 91))
         self.start_btn.setObjectName("start_btn")
-        ########
         self.save_filename_label = QtWidgets.QLabel(self.crab_settings)
         self.save_filename_label.setGeometry(QtCore.QRect(145, 46, 81, 21))
         self.save_filename_label.setMinimumSize(QtCore.QSize(46, 0))
@@ -189,7 +248,6 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.save_filename_label.setFont(font)
         self.save_filename_label.setObjectName("save_filename_label")
-        ########
         self.keywords_label = QtWidgets.QLabel(self.crab_settings)
         self.keywords_label.setGeometry(QtCore.QRect(370, 46, 81, 21))
         self.keywords_label.setMinimumSize(QtCore.QSize(46, 0))
@@ -197,8 +255,6 @@ class Ui_MainWindow(object):
         font.setPointSize(15)
         self.keywords_label.setFont(font)
         self.keywords_label.setObjectName("keywords_label")
-        #####
-        #####
         self.crab_progress = QtWidgets.QGroupBox(self.centralwidget)
         self.crab_progress.setGeometry(QtCore.QRect(30, 410, 741, 211))
         font = QtGui.QFont()
@@ -210,7 +266,15 @@ class Ui_MainWindow(object):
         font = QtGui.QFont()
         font.setPointSize(17)
         self.progress_bar.setFont(font)
-        self.progress_bar.setProperty("value", 24)
+        # 进度条样式
+        # self.progress_bar.setStyleSheet(
+        #     "QProgressBar { border: 2px solid grey; "
+        #     "border-radius: 5px; color: rgb(20,20,20);  "
+        #     "background-color: #FFFFFF; text-align: center;}"
+        #     "QProgressBar::chunk {background-color: rgb(100,200,200); "
+        #     "border-radius: 10px; margin: 0.1px;  width: 1px;}"
+        # )
+        self.progress_bar.setProperty("value", 0)
         self.progress_bar.setObjectName("progress_bar")
         self.progress_bar_label = QtWidgets.QLabel(self.crab_progress)
         self.progress_bar_label.setGeometry(QtCore.QRect(10, 50, 60, 16))
@@ -231,7 +295,7 @@ class Ui_MainWindow(object):
         self.log_info.setFont(font)
         self.log_info.setObjectName("log_info")
         self.progress_bar_percentage = QtWidgets.QLabel(self.crab_progress)
-        self.progress_bar_percentage.setGeometry(QtCore.QRect(690, 50, 31, 16))
+        self.progress_bar_percentage.setGeometry(QtCore.QRect(690, 50, 35, 16))
         self.progress_bar_percentage.setObjectName("progress_bar_percentage")
         self.title = QtWidgets.QLabel(self.centralwidget)
         self.title.setGeometry(QtCore.QRect(300, 10, 161, 31))
@@ -283,7 +347,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "微信公众号爬虫v1.0.0"))
@@ -308,7 +371,7 @@ class Ui_MainWindow(object):
         self.crab_progress.setTitle(_translate("MainWindow", "爬取进度"))
         self.progress_bar_label.setText(_translate("MainWindow", "进度条"))
         self.info_label.setText(_translate("MainWindow", "日志信息"))
-        self.progress_bar_percentage.setText(_translate("MainWindow", "25%"))
+        self.progress_bar_percentage.setText(_translate("MainWindow", "0%"))
         self.title.setText(_translate("MainWindow", "微信公众号爬虫"))
         self.app_version.setText(_translate("MainWindow", "v1.0.0"))
         self.contact_author.setText(_translate("MainWindow", "联系作者：wsz2002@foxmail.com"))
@@ -378,48 +441,31 @@ class Ui_MainWindow(object):
         # 当前选择的公众号的fakeid
         wpub_selected_fakid = self.wpub_search_res[wpub_selected_index]['wpub_fakid']
 
-
-
-        self.set_info('正在获取所有文章url...')
-        # 获取所有文章url
-        run_getAllUrls(
-            page_start=self.start_page_int,
-            page_num=self.crab_page_int,
-            save_path=self.save_filepath_str,
-            tok=self.tok_str,
-            fad=wpub_selected_fakid,
-            headers=self.headers,
-            filename='raw/' + self.save_filename_str
-        )
-        self.set_info('正在根据所有文章的url获取文章内容...')
-        # 多线程根据url获取content
-        run_getContentsByUrls_MultiThread(
-            savepath=self.save_filepath_str,
-            filename='raw/' + self.save_filename_str,
-            headers=self.headers
-        )
-        self.set_info('正在进行时间戳转换...')
-        # 根据时间戳获取时间
-        run_getRealTimeByTimeStamp(
-            savepath=self.save_filepath_str,
-            filename='raw/' + self.save_filename_str
-        )
-        self.set_info('正在根据关键词筛选文章...')
-        # 用户输入关键词
+        # 获取关键词
         self.keywords_str = self.keywords.text()
-        run_getTitleByKeywords(
-            keywords_str=self.keywords_str,
-            filename=self.save_filename_str,
-            savepath=self.save_filepath_str
-        )
-        self.set_info('爬取完成!')
-        # 已选择公众号下标
-        print('[][][][][][]', wpub_selected_index, type(wpub_selected_index))
 
-        ##### 正则!!! #####
-    def set_info(self, info:str):
+        global dic
+        dic['page_start'] = self.start_page_int
+        dic['page_num'] = self.crab_page_int
+        dic['savepath'] = self.save_filepath_str
+        dic['tok'] = self.tok_str
+        dic['fad'] = wpub_selected_fakid
+        dic['headers'] = self.headers
+        dic['filename'] = self.save_filename_str
+        dic['keywords'] = self.keywords_str
+
+        # 爬取线程
+        self.crabThread = CrabThread(dic)
+        self.crabThread.sig_crab.connect(self.set_info)
+        self.crabThread.start()
+
+    def set_info(self, type):
         current_time = str(datetime.datetime.now())[:-7]
-        self.log_info.append(f'[{current_time}]     {info}')
+        global log_info
+        info = log_info[type]
+        self.log_info.append(f'[{current_time}]     {info[0]}')
+        self.progress_bar.setValue(info[1])
+        self.progress_bar_percentage.setText(str(info[1]) + '%')
 
 
 if __name__ == "__main__":
