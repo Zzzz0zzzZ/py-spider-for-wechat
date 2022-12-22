@@ -9,11 +9,11 @@ import datetime
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThread, pyqtSignal
-from getFakId import get_fakid
-from getAllUrls import run_getAllUrls
-from getContentsByUrls_MultiThread import run_getContentsByUrls_MultiThread
-from getRealTimeByTimeStamp import run_getRealTimeByTimeStamp
-from getTitleByKeywords import run_getTitleByKeywords
+from utils.getFakId import get_fakid
+from utils.getAllUrls import run_getAllUrls
+from utils.getContentsByUrls_MultiThread import run_getContentsByUrls_MultiThread
+from utils.getRealTimeByTimeStamp import run_getRealTimeByTimeStamp
+from utils.getTitleByKeywords import run_getTitleByKeywords
 
 # 参数
 dic = {
