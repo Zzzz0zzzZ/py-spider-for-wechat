@@ -2,6 +2,7 @@
 
 > 欢迎二次开发，提交PR 🎉
 
+[![Security Status](https://www.murphysec.com/platform3/v3/badge/1609118351629492224.svg)](https://www.murphysec.com/accept?code=08001e21bf8bfd07351691138c6690d7&type=1&from=2&t=2)
 ## 项目简介
 
 利用python构建爬虫，爬取指定公众号历史文章及内容，同时支持利用关键词筛选文章。
